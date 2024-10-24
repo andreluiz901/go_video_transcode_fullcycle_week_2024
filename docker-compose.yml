@@ -10,6 +10,12 @@ services:
       POSTGRES_DB: "converter"
       POSTGRES_HOST: "postgres"
       POSTGRES_SSL_MODE: "disable"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+      CONVERSION_EXCHANGE: "conversion_exchange"
+      CONVERSION_QUEUE: "video_conversion_queue"
+      CONVERSION_KEY: "conversion"
+      CONFIRMATION_KEY: "finish-conversion"
+      CONFIRMATION_QUEUE: "video_confirmation_queue"
     volumes:
       - .:/app
       - external-storage:/media/uploads
@@ -36,6 +42,15 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: teste@teste.com
       PGADMIN_DEFAULT_PASSWORD: teste
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
 
 volumes:
   external-storage:
